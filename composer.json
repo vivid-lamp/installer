@@ -1,6 +1,7 @@
 {
     "name": "sleepy-lamp/installer",
     "description": "php easy framework component",
+    "type": "project",
     "authors": [
         {
             "name": "sleepy-lamp",
