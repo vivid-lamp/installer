@@ -3,11 +3,18 @@
 declare(strict_types=1);
 
 use App\Provider\ConfigServiceProvider;
-use SleepyLamp\Framework\App;
+use VividLamp\Framework\App;
+use Slim\Psr7\Factory\ServerRequestFactory;
 
-require  __DIR__ . '/../vendor/autoload.php';
+
+require  __DIR__ . '/../../vendor/autoload.php';
 
 $app = new App( __DIR__ . '/../');
+
+/**
+ * 绑定异常处理类
+ */
+$app->singleton(\VividLamp\Framework\Exception\Handler::class, \App\ExceptionHandler::class);
 
 $app->register(ConfigServiceProvider::class);
 
@@ -18,12 +25,16 @@ $http = $app->http;
  * 载入全局中间件
  */
 $http->loadMiddleware([
-    function($request, $next) {
-        echo 'global middleware1 start', PHP_EOL;
-        $response = $next($request);
-        echo 'global middleware1 end', PHP_EOL;
-        return $response;
-    }
+
 ]);
 
-$http->run();
+/**
+ * 载入路由配置文件
+ */
+$http->loadRouteConfig(
+    $app->getRootPath() . 'App/routes.php'
+);
+
+$http->run(
+    ServerRequestFactory::createFromGlobals()
+);

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Provider;
 
-use SleepyLamp\Framework\Config;
-use SleepyLamp\Framework\ServiceProvider;
+use VividLamp\Framework\Config;
+use VividLamp\Framework\ServiceProvider;
 
 class ConfigServiceProvider extends ServiceProvider
 {

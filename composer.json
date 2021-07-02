@@ -1,15 +1,14 @@
 {
-    "name": "sleepy-lamp/installer",
-    "description": "php easy framework component",
+    "name": "vivid-lamp/installer",
+    "description": "php easy framework installer",
     "type": "project",
     "authors": [
         {
-            "name": "sleepy-lamp",
+            "name": "vivid-lamp",
             "email": "1903213068@qq.com"
         }
     ],
     "require": {
-        "psr/http-message": "^1.0",
         "php": "^7.3",
         "sleepy-lamp/framework": "^1.0"
     },
