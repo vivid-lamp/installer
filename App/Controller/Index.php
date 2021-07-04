@@ -2,20 +2,20 @@
 
 namespace App\Controller;
 
+use Laminas\Diactoros\Response;
 use Psr\Http\Message\ServerRequestInterface;
-use VividLamp\Framework\Config;
-use Slim\Psr7\Factory\ResponseFactory;
+
+
 
 class Index
 {
-    public function index(ServerRequestInterface $request, Config $config)
+
+    public function index(ServerRequestInterface $request)
     {
-
-        // $a = [];
-        // echo $a[2];
-
-        $response = (new ResponseFactory())->createResponse()->withHeader('Content-Type', 'text/plain');
-        $response->getBody()->write(json_encode($config->get('middleware')));
+        $response = new Response();
+        $response->getBody()->write('<h3>Content from Controller</h3>');
+        $response->getBody()->write("<h3>{$request->getUri()->getPath()}</h3>");
+        $response->getBody()->write("<h3>" . json_encode($request->getAttributes()) . "</h3>");
         return $response;
     }
 }

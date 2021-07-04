@@ -2,8 +2,9 @@
 
 namespace App;
 
+use Laminas\Diactoros\Response;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Psr7\Response;
 use VividLamp\Framework\Exception\Handler;
 
 class ExceptionHandler extends Handler
@@ -13,7 +14,7 @@ class ExceptionHandler extends Handler
         
     }
 
-    public function render(ServerRequestInterface $request, \Throwable $e)
+    public function render(ServerRequestInterface $request, \Throwable $e): ResponseInterface
     {
         $response = new Response();
         $response = $response->withHeader('Content-Type', 'text/plain');

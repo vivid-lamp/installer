@@ -3,19 +3,27 @@
 
 namespace App\Provider;
 
-use VividLamp\Framework\ServiceProvider;
-use VividLamp\Framework\Contract\RouterInterface;
 
-class AppServiceProvider extends ServiceProvider
+use Psr\Http\Message\ServerRequestInterface;
+use VividLamp\Framework\Http;
+use VividLamp\Framework\Router;
+use VividLamp\Framework\ServiceProvider;
+
+
+class RouterServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton(RouterInterface::class, function () {
-            $router = new \League\Route\Router;
-            include $this->app->getRootPath() . 'App/routes.php';
+        $this->app->singleton(Router::class, function () {
+            $router = new Router($this->app, $this->app->getRootPath() . 'App/routes.php');
             return $router;
         });
-
     }
 
+    public function boot(Http $http, Router $router)
+    {
+        $http->loadRouteDispatcher(function (ServerRequestInterface $request) use ($router) {
+            return $router->dispatch($request);
+        });
+    }
 }

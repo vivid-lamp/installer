@@ -2,21 +2,18 @@
 
 declare(strict_types=1);
 
-use App\Provider\ConfigServiceProvider;
 use VividLamp\Framework\App;
-use Slim\Psr7\Factory\ServerRequestFactory;
 
+require __DIR__ . '/../vendor/autoload.php';
 
-require  __DIR__ . '/../../vendor/autoload.php';
-
-$app = new App( __DIR__ . '/../');
+$app = new App(__DIR__ . '/../');
 
 /**
  * 绑定异常处理类
  */
 $app->singleton(\VividLamp\Framework\Exception\Handler::class, \App\ExceptionHandler::class);
 
-$app->register(ConfigServiceProvider::class);
+$app->register(\App\Provider\RouterServiceProvider::class);
 
 $http = $app->http;
 
@@ -25,16 +22,15 @@ $http = $app->http;
  * 载入全局中间件
  */
 $http->loadMiddleware([
-
+    //    \App\Middleware\Bar::class,
 ]);
 
-/**
- * 载入路由配置文件
- */
-$http->loadRouteConfig(
-    $app->getRootPath() . 'App/routes.php'
-);
-
 $http->run(
-    ServerRequestFactory::createFromGlobals()
+    $request = \Laminas\Diactoros\ServerRequestFactory::fromGlobals(
+        $_SERVER,
+        $_GET,
+        $_POST,
+        $_COOKIE,
+        $_FILES
+    )
 );
